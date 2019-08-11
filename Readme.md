@@ -1,14 +1,16 @@
 
 
-# j - a little journal/todo command line tool
+# jw - a little journal/todo command line tool
 
-"j" is just a bash shell script tool to automate some journaling and
-todo lists from the command line; files are stored locally and committed
-to local repo (only)
+"jw" is a node script to automate some journaling and
+todo lists from the command line; data is stored in Firebase.
+
+"j.sh" is the MVP bash shell script version; files are stored 
+locally and committed to local repo (only).
 
 ## Usage
 
-*j* - by itself, this opens an editor on a journal file named YYYY-MM/YYYY-MM-DD
+*jw* - by itself, this opens an editor on a journal file named YYYY-MM/YYYY-MM-DD
 
 You can add whatever you like. No formatting required. Track contacts, meetings, whatever. Uses \$EDITOR 
 if set; vi otherwise.
@@ -42,12 +44,8 @@ the local repo (~/.j/.git) (not pushed anywhere)
 
 ## Files
 
-files are stored in ~/.j  or ${JHOME}/.j
-
-*~/.j/todo*  - your todo list
-
+for j.sh, files are stored in ~/.j  or ${JHOME}/.j; *~/.j/todo*  - your todo list; 
 *~/.j/todo.done*  - your list of done items (auto-created when "^DONE " is prepended)
-
 *~/.j/2019-08/2019-08-07*  - your set of daily journal files
 
 ## TODO  :-)
