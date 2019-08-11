@@ -1,0 +1,98 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+
+const { Firestore } = require('@google-cloud/firestore');
+const cp = require('child_process')
+const fs = require('fs')
+
+const opts = {
+    projectId: 'webjournal'
+}
+const firestore = new Firestore(opts);
+const userPrefix = 'users/gnetrc@gmail.com';
+ 
+// 
+program.version('0.1.0');
+program.option('-d, --debug', 'show debug info');
+program.command('edit').action(commandEditJournal);
+program.command('show [nDays]').action(commandShowJournal);
+program.command('add [journalText...]').action(commandAddJournal);
+program.command('todo [grepPattern]').option('-a, --all').action(commandEditTodo);
+
+program.parse(process.argv);
+//commandEditJournal();    // run default ...note other commands process.exit
+
+//  undef==0,  non-integers==0, else integer n
+function commandShowJournal(nDays) {
+    let n = (typeof nDays === "undefined") ? 0 : (parseInt(nDays)>0) ? parseInt(nDays) : 0
+    console.log('...show journal:',n);
+    // for n days ago, print journal
+}
+
+function commandEditJournal() {
+    console.log('...edit journal');
+}
+
+function commandAddJournal(journalText) {
+    console.log('...add', journalText.join(" "));
+}
+
+// todo==edit, todo xyz==grep, todo -a==show all (==grep "")
+function commandEditTodo(grepPattern, cmdObj) {
+    if (cmdObj.all) {  // -a or --all
+        console.log('...print todo all ');
+        getTodo().then( todoAll => {
+            console.log('back from gT promise all todo:')
+            console.log(todoAll.data)
+        }).catch(err => {
+            console.log('err from gT', err)
+        })
+    } else if (grepPattern) {   // grep
+        console.log('...print todo grep ',grepPattern);
+    } else {   // edit
+        console.log('...edit todo');
+        getTodo().then( todoAll => {
+            console.log('back from gT promise edit todo:')
+
+            ////////////
+            const tmpFname = '/tmp/foo'     // maybe .userName.todo
+            fs.writeFileSync(tmpFname,todoAll.data)
+
+            const vi = cp.spawn('vi', [tmpFname], { stdio: 'inherit'} );
+            vi.on('close', (code) => {
+              console.log(`close: child process close all stdio with code ${code}`);
+            });
+            vi.on('exit', (code) => {
+              console.log(`exit: child process exited with code ${code}`); 
+              let dNew = fs.readFileSync(tmpFname)  // returns a buffer? so convert to string
+              updateTodo( dNew.toString() ).then( a => {
+                }).catch(err => {
+                    console.log('err from gT', err)
+                })
+            });
+            ////////////
+        }).catch(err => {
+            console.log('err from gT', err)
+        })
+    }
+}
+
+async function getTodo () {
+  const jwTodo = `${userPrefix}/data/todo`;
+  const docRef = firestore.doc(jwTodo);
+
+  const doc = await docRef.get();
+  const d = doc.data();
+  //console.dir('data d: ', d);
+  return (d);
+}
+
+async function updateTodo ( dNew ) {
+  const jwTodo = `${userPrefix}/data/todo`;
+  const docRef = firestore.doc(jwTodo);
+
+  const doc = await docRef.update( { data: dNew } );
+  return;
+}
+
