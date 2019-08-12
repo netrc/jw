@@ -1,0 +1,1 @@
+curl -H Authorization: Bearer ya29.GltgByjcMuKo_RvlBLetq66v2mSMKNO5V_H9inTg9u2xHY2EDtYKI31HoPK61TKu9lU_XGgE6LY-zta-LtBzEIrDn1Hd8pF8PzQWzMZrUnUb_r2jWz3vupNTskNB https://www.googleapis.com/storage/v1/b/jwdata/o/gstodo?alt=media
