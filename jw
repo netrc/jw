@@ -50,6 +50,18 @@ function commandEditTodo(grepPattern, cmdObj) {
         })
     } else if (grepPattern) {   // grep
         console.log('...print todo grep ',grepPattern);
+        getTodo().then( todoAll => {
+            console.log('back from gT promise grep todo:')
+            todoAll.data.split("\n").forEach( l => {
+                var res = l.match(grepPattern);
+                if (res) {
+                    console.log(l);  // really don't use res info; just print                   
+                }
+            });
+        }).catch(err => {
+            console.log('err from gT grep', err)
+        })
+
     } else {   // edit
         console.log('...edit todo');
         getTodo().then( todoAll => {
