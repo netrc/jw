@@ -56,3 +56,29 @@ for j.sh, files are stored in ~/.j  or ${JHOME}/.j; *~/.j/todo*  - your todo lis
 * trap 'rm .toDone' EXIT ??
 * ability to set diff project dirs (why? multi-user?)  j new px /some/path (stored in .j/config);  j px ? syntax 
 * add -d option for debugging
+
+
+
+# New ??
+
+j - manages todos and projects
+* todo (gist)
+* and local files
+* journal/done (gist)
+* dashboard (trello)
+
+// which is kinda crazy
+
+j   // list todo projects in gist
+j <proj>   // list todo for proj
+j <proj> ......   // add todo item to project
+j -list    // list projects in todo jist
+j -vi <proj>   // list todo into file; edit file; put file back in gist; "DONE" items go to done gist
+j -done <proj>   // list done items for project
+j -done <proj> ......   // add timestamp, DONE text to done gist
+j dash    // list projects  ?? backlog??
+j dash <proj>  // show card for project
+j dash -next <proj> ......   // make next text
+j dash -emoji <proj> x   // set emoji
+j dash -prog <proj> NN    // set progress %
+
